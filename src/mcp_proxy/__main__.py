@@ -18,7 +18,7 @@ from mcp.client.stdio import StdioServerParameters
 from .sse_client import run_sse_client
 from .sse_server import SseServerSettings, run_sse_server
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.CRITICAL)
 SSE_URL: t.Final[str | None] = os.getenv(
     "SSE_URL",
     None,
@@ -103,7 +103,7 @@ def main() -> None:
         or args.command_or_url.startswith("https://")
     ):
         # Start a client connected to the SSE server, and expose as a stdio server
-        logging.debug("Starting SSE client and stdio server")
+        logging.info("Starting SSE client and stdio server")
         headers = dict(args.headers)
         if api_access_token := os.getenv("API_ACCESS_TOKEN", None):
             headers["Authorization"] = f"Bearer {api_access_token}"
@@ -111,7 +111,7 @@ def main() -> None:
         return
 
     # Start a client connected to the given command, and expose as an SSE server
-    logging.debug("Starting stdio client and SSE server")
+    logging.info("Starting stdio client and SSE server")
     stdio_params = StdioServerParameters(
         command=args.command_or_url,
         args=args.args,
